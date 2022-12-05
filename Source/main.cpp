@@ -11,6 +11,5 @@ int main(int argc, char *argv[])
     CIEVector cieVector = fparser.Read();
     MainWindow w(cieVector);
     w.show();
-    w.Draw();
     return a.exec();
 }

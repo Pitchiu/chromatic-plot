@@ -14,15 +14,12 @@ public:
     void resizeEvent(QResizeEvent *event, const QSize &newSize);
     virtual void Draw() = 0;
 
-    void DrawPoint(QPointF);
-
 
 protected:
     CIEVector &cievector;
     QImage image;
-
     void DrawMargin(QPainter &painter, std::string xLabels[8], std::string yLabels[8]);
-    void DrawPoint(QPainter &painter, const QPointF &point);
+    virtual void DrawPoint(QPainter &painter, const QPointF &point, QColor color) = 0;
 };
 
 #endif // DRAWAREA_H

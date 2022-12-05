@@ -2,7 +2,7 @@
 
 DrawArea::DrawArea(CIEVector &cievector) : image(600,600, QImage::Format_RGB32), cievector(cievector)
 {
-
+    setFixedSize(600,600);
 }
 
 
@@ -37,10 +37,4 @@ void DrawArea::DrawMargin(QPainter &painter, std::string xLabels[9], std::string
         painter.drawText(QPoint(x1 - 20, y), QString(yLabels[i].c_str()));
         y-=50;
     }
-}
-
-
-void DrawArea::DrawPoint(QPainter &painter, const QPointF& point)
-{
-    painter.drawPoint(point.x()*500 + 100, 500*(1.0-point.y()));
 }
