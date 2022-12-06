@@ -8,6 +8,7 @@
 #include "horseshoe.h"
 #include "bezier.h"
 
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -26,5 +27,8 @@ public:
     HorseShoe horseShoeArea;
     Bezier bezierArea;
 
+
+private:
+    Mode mode=bezier;
 };
 #endif // MAINWINDOW_H

@@ -5,6 +5,9 @@
 #include <QPainter>
 
 #include "fileparser.h"
+
+enum Mode {bezier, lambda};
+
 class DrawArea : public QWidget
 {
     Q_OBJECT

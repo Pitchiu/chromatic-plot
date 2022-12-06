@@ -5,6 +5,32 @@ Bezier::Bezier(CIEVector &cievector) : DrawArea(cievector)
     setMouseTracking(true);
 }
 
+void Bezier::DrawLambda()
+{
+    image.fill(qRgb(255, 255, 255));
+    QPainter painter(&image);
+
+    DrawMargin(painter, labelsX, labelsY);
+
+    QVector<QPointF> lambdaVecX(cievector.size());
+    QVector<QPointF> lambdaVecY(cievector.size());
+    QVector<QPointF> lambdaVecZ(cievector.size());
+
+    for(int i = 0; i<cievector.size(); i++)
+    {
+        lambdaVecX[i] = QPointF(cievector[i].waveLength, cievector[i].x);
+        lambdaVecY[i] = QPointF(cievector[i].waveLength, cievector[i].y);
+        lambdaVecZ[i] = QPointF(cievector[i].waveLength, cievector[i].z);
+    }
+    for(int i=0; i<cievector.size()-1; i++)
+    {
+        DrawLine(painter, QLineF(lambdaVecX[i],lambdaVecX[i+1]), Qt::red, 3);
+        DrawLine(painter, QLineF(lambdaVecY[i],lambdaVecY[i+1]), Qt::green, 3);
+        DrawLine(painter, QLineF(lambdaVecZ[i],lambdaVecZ[i+1]), Qt::blue, 3);
+    }
+    update();
+}
+
 void Bezier::Draw()
 {
     image.fill(qRgb(255, 255, 255));
@@ -154,6 +180,15 @@ QVector<QPointF> Bezier::CalculateBezierCurve(const QVector<QPointF> &points)
     return result;
 }
 
+void Bezier::GenerateEqualSpectrum()
+{
+    for(int i=0; i < pointsCount; i++)
+    {
+        points[i].setY(1.0);
+    }
+    DrawEvent();
+}
+
 
 float Bezier::CalculateRecursiveBezier(const QVector<QPointF> &controlPoints, int first, int last, float t)
 {
@@ -170,4 +205,46 @@ float Bezier::CalculateIntegral(const QVector<QPointF> &points)
     for(int i=0; i < points.size()-1; i++)
         sum+= points[i].y()*step;
     return sum;
+}
+
+void Bezier::Save()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, "Save file", "", "*.txt");
+    QFile f( fileName );
+    f.open(QIODevice::WriteOnly);
+
+    if(f.isOpen())
+    {
+        QTextStream out(&f);
+        for(int i=0; i< pointsCount; i++)
+            out << points[i].x() << " " <<points[i].y() <<"\n";
+        f.close();
+    }
+}
+
+void Bezier::Load()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, "Open file", "", "*.txt");
+
+    QFile f( fileName );
+    f.open(QIODevice::ReadOnly);
+
+    if(f.isOpen())
+    {
+        QTextStream in(&f);
+        QString line;
+        points.clear();
+        line = in.readLine();
+        while(!line.isNull())
+        {
+            QStringList list = line.split(" ");
+            if(list.size()!=2) break;
+            QPointF point = QPointF(list[0].toFloat(), list[1].toFloat());
+            points.append(point);
+            line=in.readLine();
+        }
+        pointsCount = points.size();
+        f.close();
+        DrawEvent();
+    }
 }

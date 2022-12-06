@@ -4,6 +4,7 @@
 #include "drawarea.h"
 #include <QVector>
 
+
 constexpr float MINWL = 380;
 constexpr float MAXWL = 780;
 constexpr float MINFACTOR = 0;
@@ -17,7 +18,13 @@ public:
     void Draw();
     void Reset(int number);
 
+    void GenerateEqualSpectrum();
+    void DrawLambda();
+
     float X=-1, Y=-1, Z=-1;
+
+    void Save();
+    void Load();
 
 signals:
     void DrawEvent();

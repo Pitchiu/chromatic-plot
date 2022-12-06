@@ -27,15 +27,44 @@ MainWindow::MainWindow(CIEVector& cieVector) : cieVector(cieVector), horseShoeAr
     centralPanel->setLayout(centralPanelLayout);
     comboBox ->setGeometry( 100 , 100 , 100 , 20 );
 
-    //QPushButton *drawButton = new QPushButton();
-    //drawButton->setText("DRAW");
-    //connect(drawButton, &QPushButton::clicked, this, [&](){Draw();});
+    QPushButton *equalSpectrumButton = new QPushButton("EQUAL SPECTRUM");
+    connect(equalSpectrumButton, &QPushButton::clicked, this, [&](){bezierArea.GenerateEqualSpectrum();});
 
-    //centralPanelLayout->addWidget(drawButton);
+    QPushButton *loadButton = new QPushButton("LOAD");
+    connect(loadButton, &QPushButton::clicked, this, [&](){bezierArea.Load();});
+
+    QPushButton *saveButton = new QPushButton("SAVE");
+    connect(saveButton, &QPushButton::clicked, this, [&](){bezierArea.Save();});
+
+    QGroupBox *spectrumBox = new QGroupBox();
+    QVBoxLayout* spectrumLayout = new QVBoxLayout;
+    spectrumLayout->setAlignment(Qt::AlignTop);
+
+    QRadioButton* defaultLambdaButton = new QRadioButton("Bezier curve");
+    defaultLambdaButton->setChecked(true);
+    QRadioButton* lambdaButton = new QRadioButton("Lambda");
+    connect(defaultLambdaButton, &QRadioButton::clicked, this, [&](bool checked){if(checked)mode=bezier; Draw();});
+    connect(lambdaButton, &QRadioButton::clicked, this, [&](bool checked){if(checked)mode=lambda; Draw();});
+
+
+    spectrumLayout->addWidget(defaultLambdaButton);
+    spectrumLayout->addWidget(lambdaButton);
+
+    spectrumBox->setLayout(spectrumLayout);
+
+    centralPanelLayout->addWidget(equalSpectrumButton);
+    centralPanelLayout->addWidget(spectrumBox);
+    centralPanelLayout->addWidget(saveButton);
+    centralPanelLayout->addWidget(loadButton);
+
+
 
     grid->addWidget(&bezierArea, 0,0);
     grid->addWidget(centralPanel, 0, 1);
     grid->addWidget(&horseShoeArea, 0,2);
+
+
+
 
     connect(&bezierArea, &Bezier::DrawEvent, this, &MainWindow::Draw);
 
@@ -50,8 +79,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::Draw()
 {
-    bezierArea.Draw();
-    horseShoeArea.SetXYZ(bezierArea.X, bezierArea.Y, bezierArea.Z);
-    horseShoeArea.Draw();
+    if(mode==bezier)
+    {
+        bezierArea.Draw();
+        horseShoeArea.SetXYZ(bezierArea.X, bezierArea.Y, bezierArea.Z);
+        horseShoeArea.Draw();
+    }
+    else
+    {
+        bezierArea.DrawLambda();
+    }
 }
 
