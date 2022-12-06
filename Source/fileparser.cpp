@@ -28,10 +28,11 @@ StringVector FileParser::SplitString(const std::string &str, char delimiter)
 
 CIEVector FileParser::Read()
 {
-    QString fileName = QFileDialog::getOpenFileName(nullptr, "Open a file");
-    std::ifstream file(fileName.toStdString());
+    QString fileName("cie.txt");
     CIEVector cieVector;
 
+    std::ifstream file;
+    file.open(fileName.toStdString());
     if (file.is_open())
     {
         std::string line;

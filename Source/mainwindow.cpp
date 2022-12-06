@@ -27,21 +27,21 @@ MainWindow::MainWindow(CIEVector& cieVector) : cieVector(cieVector), horseShoeAr
     centralPanel->setLayout(centralPanelLayout);
     comboBox ->setGeometry( 100 , 100 , 100 , 20 );
 
-    QPushButton *drawButton = new QPushButton();
-    drawButton->setText("DRAW");
-    connect(drawButton, &QPushButton::clicked, this, [&](){Draw();});
+    //QPushButton *drawButton = new QPushButton();
+    //drawButton->setText("DRAW");
+    //connect(drawButton, &QPushButton::clicked, this, [&](){Draw();});
 
-    centralPanelLayout->addWidget(drawButton);
+    //centralPanelLayout->addWidget(drawButton);
 
     grid->addWidget(&bezierArea, 0,0);
     grid->addWidget(centralPanel, 0, 1);
     grid->addWidget(&horseShoeArea, 0,2);
 
-
-    //bezierArea.seta
+    connect(&bezierArea, &Bezier::DrawEvent, this, &MainWindow::Draw);
 
     setFixedSize(1400,600);
     central.setLayout(grid);
+    Draw();
 }
 
 MainWindow::~MainWindow()

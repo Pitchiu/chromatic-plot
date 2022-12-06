@@ -100,7 +100,7 @@ void Bezier::mouseMoveEvent(QMouseEvent *event)
         return;
 
     points[activeIndex] = position;
-    Draw();
+    DrawEvent();
 }
 
 void Bezier::Reset(int number)
@@ -119,7 +119,7 @@ void Bezier::Reset(int number)
     }
     points.append(QPointF(MAXWL, mid));
 
-    Draw();
+    DrawEvent();
 }
 
 

@@ -7,6 +7,7 @@
 #include "fileparser.h"
 class DrawArea : public QWidget
 {
+    Q_OBJECT
 public:
     DrawArea(CIEVector &cievector);
 
@@ -18,6 +19,7 @@ public:
 protected:
     CIEVector &cievector;
     QImage image;
+
     void DrawMargin(QPainter &painter, std::string xLabels[8], std::string yLabels[8]);
     virtual void DrawPoint(QPainter &painter, const QPointF &point, QColor color) = 0;
 };

@@ -15,12 +15,14 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(CIEVector& cieVector);
     ~MainWindow();
-    void Draw();
 
     QWidget central;
     CIEVector cieVector;
 
-private:
+public slots:
+    void Draw();
+
+public:
     HorseShoe horseShoeArea;
     Bezier bezierArea;
 

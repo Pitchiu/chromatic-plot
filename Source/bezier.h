@@ -11,12 +11,16 @@ constexpr float MAXFACTOR = 1.8;
 
 class Bezier : public DrawArea
 {
+    Q_OBJECT
 public:
     Bezier(CIEVector &cievector);
     void Draw();
     void Reset(int number);
 
     float X=-1, Y=-1, Z=-1;
+
+signals:
+    void DrawEvent();
 
 private:
 
